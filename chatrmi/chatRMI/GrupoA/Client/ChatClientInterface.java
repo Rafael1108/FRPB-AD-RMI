@@ -51,4 +51,10 @@ public interface ChatClientInterface extends Remote {
     */
     String getClientName() throws RemoteException;
 
+    /**
+     * Actualiza la lista de usuarios conectados
+     * @param contacts
+     * @throws java.rmi.RemoteException
+     */
+    void updateContactList(List<String> contacts) throws RemoteException;
 }

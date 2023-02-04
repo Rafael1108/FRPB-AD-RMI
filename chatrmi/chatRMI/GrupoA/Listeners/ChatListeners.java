@@ -11,13 +11,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent; 
+import java.awt.event.WindowEvent;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask; 
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -26,8 +26,8 @@ import javax.swing.JOptionPane;
  *
  * @author Edgar Basurto
  */
-public class ChatListeners extends UnicastRemoteObject implements  ActionListener, KeyListener, ChatClientInterface {
-    
+public class ChatListeners extends UnicastRemoteObject implements ActionListener, KeyListener, ChatClientInterface {
+
     private List<String> lstClientes;
     private final ChatServerInterface server;
     // private final String name;
@@ -47,16 +47,15 @@ public class ChatListeners extends UnicastRemoteObject implements  ActionListene
         this.user = new Chatter(_name);
         this.server = _server;
         this.lstClientes = new ArrayList();
-        
-        
+
         //Timer para verificar conexiones
         Timer minuteur = new Timer();
         TimerTask tache = new TimerTask() {
             @Override
             public void run() {
                 try {
-                    
-                    List<String> lstTmp = server.getListClientByName(user.getName());                    
+
+                    List<String> lstTmp = server.getListClientByName(user.getName());
                     for (String client : lstClientes) {
                         if (!client.equals(user.getName())) {
                             lstClientes.add(lstTmp.get(0));
@@ -68,8 +67,7 @@ public class ChatListeners extends UnicastRemoteObject implements  ActionListene
             }
         };
         minuteur.schedule(tache, 0, 20000);
-        
-       
+
     }
 
     /**
@@ -137,7 +135,7 @@ public class ChatListeners extends UnicastRemoteObject implements  ActionListene
             }
         }
     }
-    
+
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -171,9 +169,10 @@ public class ChatListeners extends UnicastRemoteObject implements  ActionListene
         try {
             String txtChat = form.getTxtEnviar().getText();
             if (!txtChat.isEmpty()) {
+
                 this.sendMessage(lstClientes, txtChat);
             }
-            
+
         } catch (Exception e1) {
             System.out.println(e1.getMessage());
         }
@@ -185,7 +184,7 @@ public class ChatListeners extends UnicastRemoteObject implements  ActionListene
     private void LimpiarTxt() {
         form.getTxtEnviar().setText("");
     }
-    
+
     @Override
     public void retrieveMessage(String message) throws RemoteException {
         String response = message;
@@ -193,11 +192,14 @@ public class ChatListeners extends UnicastRemoteObject implements  ActionListene
         String[] resp = response.split(separador);
         if (resp.length == 2) {
             form.notificarHistorico(resp[0], Color.decode(resp[1]));
+            //System.out.println(lstClientes);
+            //form.updateListUsers(server.getListClientByName(user.getName()), Color.BLUE);
+            //form.updateListUsers(lstClientesTemp, Color.BLUE);
         } else {
             form.notificarHistorico(response, Color.DARK_GRAY);
-        }        
+        }
     }
-    
+
     @Override
     public void sendMessage(List<String> list, String mssg) {
         try {
@@ -206,21 +208,27 @@ public class ChatListeners extends UnicastRemoteObject implements  ActionListene
             System.out.println("Error Client " + user.getName() + " Broadcast: " + ex.getMessage());
         }
     }
-    
+
     @Override
     public String getClientName() {
         return user.getName();
     }
-    
+
     @Override
     public void closeChat(String message) throws RemoteException {
         form.getTxtEnviar().setEnabled(false);
-        JOptionPane.showMessageDialog(form, message, "Alert", JOptionPane.WARNING_MESSAGE);
+        confirmarSalida();
+        //JOptionPane.showMessageDialog(form, message, "Alert", JOptionPane.WARNING_MESSAGE);
     }
-    
+
     @Override
     public void openChat() throws RemoteException {
         form.getTxtEnviar().setEnabled(true);
     }
-    
+
+    @Override
+    public void updateContactList(List<String> contacts) throws RemoteException {
+        form.updateListUsers(contacts, Color.BLUE);
+    }
+
 }

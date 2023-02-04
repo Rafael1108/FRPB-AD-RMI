@@ -2,8 +2,8 @@ package chatRMI.GrupoA.Client;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.List;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
@@ -19,37 +19,37 @@ import javax.swing.text.StyleContext;
 public class ChatClientForm extends javax.swing.JFrame {
 
     DefaultCaret caret;
-    public String user = "";
+ 
 
     /**
      * Creates new form ChatClientForm
+     * @param nick_usuario
      */
-    public ChatClientForm() {
-        String nick_usuario = JOptionPane.showInputDialog(
-                null,
-                "NickName: ",
-                "Ingrese su NickName",
-                JOptionPane.INFORMATION_MESSAGE);
-        if (nick_usuario != null && !nick_usuario.isEmpty()) {
+    public ChatClientForm(String nick_usuario) {
+       
 
             initComponents();
             lblNickName.setText(nick_usuario);
-            user = nick_usuario;
             this.setLocationRelativeTo(null);
 
             /* */
             caret = (DefaultCaret) this.lblHistorico.getCaret();
             caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
             setPreferredSize(new Dimension(480, 360));
-        } else {
-            System.exit(0);
-        }
+        
     }
 
     public void notificarHistorico(String linea, Color _color) {
         appendToPane(lblHistorico, linea + "\n", _color);
     }
-
+    
+     public void updateListUsers(List<String> listUsers, Color _color) {
+         txtPaneUsuarios.setText("");
+         for (String object : listUsers) {
+             appendToPane(txtPaneUsuarios,object + " en linea...\n", _color);
+         }
+        
+    }
     /**
      * Método que cambia de color a la línea que se va a agregar al JTextPane
      *
@@ -89,6 +89,7 @@ public class ChatClientForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         lblHistorico = new javax.swing.JTextPane();
         btnEnviar = new javax.swing.JButton();
@@ -96,6 +97,8 @@ public class ChatClientForm extends javax.swing.JFrame {
         lblNickName = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
         txtEnviar = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtPaneUsuarios = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Chat RMI");
@@ -105,6 +108,8 @@ public class ChatClientForm extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/chatRMI/GrupoA/Img/icon_01.png"))); // NOI18N
         jLabel1.setText("CHAT GRUPO A");
+
+        jLabel3.setText("Usuarios conectados");
 
         lblHistorico.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblHistorico.setFocusable(false);
@@ -129,6 +134,9 @@ public class ChatClientForm extends javax.swing.JFrame {
             }
         });
 
+        txtPaneUsuarios.setFocusable(false);
+        jScrollPane1.setViewportView(txtPaneUsuarios);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -140,7 +148,6 @@ public class ChatClientForm extends javax.swing.JFrame {
                         .addComponent(txtEnviar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(jLabel1)
@@ -149,7 +156,15 @@ public class ChatClientForm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblNickName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnLogout)))
+                        .addComponent(btnLogout))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3)))
                 .addGap(32, 32, 32))
         );
         layout.setVerticalGroup(
@@ -162,7 +177,12 @@ public class ChatClientForm extends javax.swing.JFrame {
                     .addComponent(lblNickName)
                     .addComponent(btnLogout))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -183,10 +203,13 @@ public class ChatClientForm extends javax.swing.JFrame {
     private javax.swing.JButton btnLogout;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextPane lblHistorico;
     private javax.swing.JLabel lblNickName;
     private javax.swing.JTextField txtEnviar;
+    private javax.swing.JTextPane txtPaneUsuarios;
     // End of variables declaration//GEN-END:variables
 
     public JButton getBtnEnviar() {
@@ -213,4 +236,13 @@ public class ChatClientForm extends javax.swing.JFrame {
         this.txtEnviar = txtEnviar;
     }
 
+    public JTextPane getTxtPaneUsuarios() {
+        return txtPaneUsuarios;
+    }
+
+    public void setTxtPaneUsuarios(JTextPane txtPaneUsuarios) {
+        this.txtPaneUsuarios = txtPaneUsuarios;
+    }
+
+    
 }

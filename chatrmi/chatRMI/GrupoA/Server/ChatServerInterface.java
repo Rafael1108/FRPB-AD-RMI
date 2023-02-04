@@ -33,9 +33,10 @@ public interface ChatServerInterface extends Remote {
      * Agrega un cliente conectado a la lista de clientes conectado "On-Line".
      *
      * @param client instancia del cliente que se desea agregar.
+     * @return true si no se repite el usuario
      * @throws java.rmi.RemoteException
      */
-    void addClient(ChatClientInterface client) throws RemoteException;
+    boolean addClient(ChatClientInterface client) throws RemoteException;
 
     /**
      * Impide que un cliente envíe mensajes pero este recibe si puede recibir
@@ -77,4 +78,10 @@ public interface ChatServerInterface extends Remote {
      */
     //
     void broadcastMssg(String mssg, List<String> list) throws RemoteException;
+    
+    /**
+     * Actualiza la lista de contactos conectados;
+     * @throws RemoteException 
+     */
+    void updateContactsOnline() throws RemoteException;
 }

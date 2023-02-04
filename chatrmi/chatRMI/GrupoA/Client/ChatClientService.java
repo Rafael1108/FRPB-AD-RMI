@@ -16,12 +16,14 @@ public class ChatClientService extends UnicastRemoteObject implements ChatClient
     private final String name;
     private final JTextArea input;
     private final JTextPane output;
+    private final JTextPane contacts;
 
-    public ChatClientService(String name, ChatServerInterface server, JTextArea jtext1, JTextPane jtext2) throws RemoteException {
+    public ChatClientService(String name, ChatServerInterface server, JTextArea jtext1, JTextPane jtext2, JTextPane jtext3) throws RemoteException {
         this.name = name;
         this.server = server;
         this.input = jtext1;
         this.output = jtext2;
+        this.contacts = jtext3;
         server.addClient(this);
     }
 
@@ -55,5 +57,13 @@ public class ChatClientService extends UnicastRemoteObject implements ChatClient
     public void openChat() throws RemoteException {
         input.setEditable(true);
         input.setEnabled(true);
+    }
+    
+    @Override
+    public void updateContactList(List<String> users) throws RemoteException {
+        contacts.setText("");
+        for (String user : users) {
+            contacts.setText(user + "\n");
+        }
     }
 }
