@@ -1,11 +1,9 @@
-
 package chatRMI.GrupoA.Client;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
@@ -27,17 +25,25 @@ public class ChatClientForm extends javax.swing.JFrame {
      * Creates new form ChatClientForm
      */
     public ChatClientForm() {
-        String nick_usuario = JOptionPane.showInputDialog("Nick: ");
-        initComponents();
-        lblNickName.setText(nick_usuario);
-        user = nick_usuario;
-        this.setLocationRelativeTo(null);
+        String nick_usuario = JOptionPane.showInputDialog(
+                null,
+                "NickName: ",
+                "Ingrese su NickName",
+                JOptionPane.INFORMATION_MESSAGE);
+        if (nick_usuario != null && !nick_usuario.isEmpty()) {
 
-        /* */
-        caret = (DefaultCaret) this.lblHistorico.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        setPreferredSize(new Dimension(480, 360));
+            initComponents();
+            lblNickName.setText(nick_usuario);
+            user = nick_usuario;
+            this.setLocationRelativeTo(null);
 
+            /* */
+            caret = (DefaultCaret) this.lblHistorico.getCaret();
+            caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+            setPreferredSize(new Dimension(480, 360));
+        } else {
+            System.exit(0);
+        }
     }
 
     public void notificarHistorico(String linea, Color _color) {
@@ -94,15 +100,17 @@ public class ChatClientForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Chat RMI");
         setAlwaysOnTop(true);
-        setMinimumSize(new java.awt.Dimension(390, 200));
+        setMinimumSize(new java.awt.Dimension(460, 200));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/chatRMI/GrupoA/Img/icon_01.png"))); // NOI18N
         jLabel1.setText("CHAT GRUPO A");
 
         lblHistorico.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblHistorico.setFocusable(false);
         jScrollPane3.setViewportView(lblHistorico);
 
+        btnEnviar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/chatRMI/GrupoA/Img/icon-03.png"))); // NOI18N
         btnEnviar.setText("ENVIAR");
         btnEnviar.setMargin(new java.awt.Insets(2, 12, 3, 12));
         btnEnviar.setMaximumSize(new java.awt.Dimension(75, 23));
@@ -113,6 +121,7 @@ public class ChatClientForm extends javax.swing.JFrame {
 
         lblNickName.setText("________________");
 
+        btnLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/chatRMI/GrupoA/Img/icon-04.png"))); // NOI18N
         btnLogout.setText("LOGOUT");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,9 +137,9 @@ public class ChatClientForm extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+                        .addComponent(txtEnviar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+                        .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane3)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
@@ -168,42 +177,6 @@ public class ChatClientForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLogoutActionPerformed
 
-//    /**
-//     * @param args the command line arguments
-//     */
-//    public static void main(String args[]) {
-//
-//        /* Set the Nimbus look and feel */
-//        <editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(ChatClientForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(ChatClientForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(ChatClientForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(ChatClientForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        </editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new ChatClientForm().setVisible(true);
-//            }
-//        });
-//
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEnviar;
@@ -220,13 +193,9 @@ public class ChatClientForm extends javax.swing.JFrame {
         return btnEnviar;
     }
 
-  
-
     public void setBtnEnviar(JButton btnEnviar) {
         this.btnEnviar = btnEnviar;
     }
-
-  
 
     public JButton getBtnLogout() {
         return btnLogout;
@@ -244,5 +213,4 @@ public class ChatClientForm extends javax.swing.JFrame {
         this.txtEnviar = txtEnviar;
     }
 
-  
 }

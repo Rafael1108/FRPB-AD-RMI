@@ -60,7 +60,7 @@ public class ChatService extends UnicastRemoteObject implements ChatServerInterf
     @Override
     public synchronized void addClient(ChatClientInterface client) throws RemoteException {
         this.clientes.add(client);
-        this.mssgLog.add("INF.: ***"+ client.getClientName() + "*** Bienvenido al chat.");
+        this.mssgLog.add("INF.: ***"+ client.getClientName() + "*** ha ingresado a la sala.");
     }
     
     /**

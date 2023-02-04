@@ -215,7 +215,7 @@ public class ChatListeners extends UnicastRemoteObject implements  ActionListene
     @Override
     public void closeChat(String message) throws RemoteException {
         form.getTxtEnviar().setEnabled(false);
-        JOptionPane.showMessageDialog(new JFrame(), message, "Alert", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(form, message, "Alert", JOptionPane.WARNING_MESSAGE);
     }
     
     @Override
